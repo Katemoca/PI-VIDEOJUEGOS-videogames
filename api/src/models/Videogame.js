@@ -1,12 +1,63 @@
-const { DataTypes } = require('sequelize');
-// Exportamos una funcion que define el modelo
-// Luego le injectamos la conexion a sequelize.
+const { DataTypes } = require("sequelize");
+
 module.exports = (sequelize) => {
-  // defino el modelo
-  sequelize.define('videogame', {
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
+  sequelize.define(
+    "Videogame",
+    {
+      id: {
+        type: DataTypes.UUID, //API = integer (ID)
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
+      },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          len: {
+            args: [2, 200],
+            msg: "The name should have between 2 to 200 characters",
+          },
+        },
+      },
+      description: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      platforms: {
+        type: DataTypes.ARRAY(DataTypes.JSON),
+        allowNull: false,
+      },
+      background_image: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      released: {
+        type: DataTypes.DATEONLY,
+        allowNull: false,
+      },
+      rating: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+      },
+      createdVideogame: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+      },
     },
-  });
+    { timestamps: false, freezeTableName: true }
+  );
 };
+
+/* 
+
+1. https://sequelize.org/docs/v6/other-topics/other-data-types/: Defines an array of DataTypes.SOMETHING.
+=> DataTypes.ARRAY( DataTypes.SOMETHING ) 
+
+2. DataTypes.DATEONLY   // DATE without time
+
+
+
+
+
+
+*/
