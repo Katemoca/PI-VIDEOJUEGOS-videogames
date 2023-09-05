@@ -2,25 +2,25 @@
 import CardVideogame from "../CardVideogame/CardVideogame";
 import styles from "./CardsContainerVideogame.module.css";
 
-function CardsContainerVideogame({ videogames }) {
+const CardsContainerVideogame = ({ videogames }) => {
   return (
-    <div className={styles.cardsmaincontainer}>
+    <>
       <div className={styles.cardscontainer}>
-        {videogames.map(({ name, genres, background_image, id, rating }) => {
+        {videogames?.map(({ id, name, background_image, rating, genres }) => {
           return (
             <CardVideogame
               key={id}
-              background_image={background_image}
-              name={name}
-              genres={genres}
               id={id}
+              name={name}
+              background_image={background_image}
               rating={rating}
+              genres={genres}
             />
           );
         })}
       </div>
-    </div>
+    </>
   );
-}
+};
 
 export default CardsContainerVideogame;

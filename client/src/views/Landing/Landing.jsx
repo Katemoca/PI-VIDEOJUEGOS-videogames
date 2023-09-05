@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 import styles from "./Landing.module.css";
 
-function Landing() {
+const Landing = () => {
   return (
     <div className={`${styles.landing} ${styles["full-screen-bg"]}`}>
       <Link to="/home">
@@ -10,6 +10,6 @@ function Landing() {
       </Link>
     </div>
   );
-}
+};
 
 export default Landing;

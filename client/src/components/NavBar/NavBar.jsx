@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import styles from "./NavBar.module.css";
 import SearchBar from "../SearchBar/SearchBar";
 
-function NavBar() {
+const NavBar = () => {
   return (
-    <nav className={styles.navbar}>
+    <>
       <div className={styles.container}>
         <Link to="/">
           <button className={styles.buttonLink}>LOGOUT</button>
@@ -79,8 +79,8 @@ function NavBar() {
           </button>
         </div>
       </div>
-    </nav>
+    </>
   );
-}
+};
 
 export default NavBar;

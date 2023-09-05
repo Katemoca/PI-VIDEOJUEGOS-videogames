@@ -1,3 +1,7 @@
+.link {
+  text-decoration: none;
+}
+
 .box {
     position: relative;
     width: auto;
@@ -45,7 +49,7 @@
     z-index: 1;
   }
   
-  .img {
+  .image {
     width: 200px;
     height: 180px;
     object-fit: cover;
@@ -83,6 +87,4 @@
     bottom: 1px;
   }
   
-  .link {
-    text-decoration: none;
-  }
+ 

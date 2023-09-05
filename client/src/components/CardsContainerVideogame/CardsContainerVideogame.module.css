@@ -1,11 +1,8 @@
-.cardsmaincontainer p {
+.cardscontainer{
     text-align: center;
     font-size: large;
     font-weight: 500;
     margin: 25px;
-}
-
-.cardscontainer{
     display: flex;
     flex-wrap: wrap;
     border-radius: 25px;

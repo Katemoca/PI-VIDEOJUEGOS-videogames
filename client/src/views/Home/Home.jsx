@@ -6,7 +6,7 @@ import { getAllVideogames } from "../../redux/actions";
 
 import styles from "./Home.module.css";
 
-function Home() {
+const Home = () => {
   const videogames = useSelector((state) => state.videogames);
   const dispatch = useDispatch();
 
@@ -24,6 +24,6 @@ function Home() {
       </div>
     </div>
   );
-}
+};
 
 export default Home;
