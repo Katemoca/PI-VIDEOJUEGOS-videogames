@@ -25,11 +25,12 @@ const getVideogamesDb = async () => {
       id: videogame.id,
       name: videogame.name,
       description: videogame.description,
-      platforms: videogame.platforms?.map((platform) => platform.name) || [],
+      platforms: videogame.platforms?.map((platform) => platform) || [],
       background_image: videogame.background_image,
       released: videogame.released,
       rating: videogame.rating,
       genres: videogame.genres?.map((genre) => genre.name) || [],
+      createdVideoGame: true,
     };
   });
 
@@ -42,29 +43,14 @@ const getVideogamesApi = async () => {
   let games = [];
   let URL_API = `https://api.rawg.io/api/games?key=${API_KEY}`;
 
-  // for (let i = 0; i < 5; i++) {
-  //   let page = await axios.get(URL_API);
-  //   page.data?.results.forEach((game) => {
-  //     games.push({
-  //       id: game.id,
-  //       name: game.name,
-  //       description: game.description || "There's no description",
-  //       platforms:
-  //         game.platforms?.map((platform) => platform.platform.name) || [],
-  //       background_image: game.background_image,
-  //       released: game.released,
-  //       rating: game.rating,
-  //       genres: game.genres?.map((genre) => genre.name) || [],
-  //       createdVideoGame: false,
-  //     });
-  //   });
-  //   URL_API = page.data.next;
-  // }
-  // return games;
-
   for (let i = 0; i < 5; i++) {
     let page = await axios.get(URL_API);
-    games = games.concat(cleanData(page.data?.results));
+    games = games.concat(
+      cleanData(page.data?.results).map((game) => ({
+        ...game,
+        createdVideoGame: false,
+      }))
+    );
     URL_API = page.data.next;
   }
   return games;
@@ -97,6 +83,9 @@ const getVideogamesByName = async (name) => {
     const filterVideogames = allVideogames.filter((game) =>
       game.name.toLowerCase().includes(name.toLowerCase())
     );
+    if (!filterVideogames.length) {
+      throw new Error("This name didn't match any videogame");
+    }
     return filterVideogames;
   }
 
@@ -121,11 +110,14 @@ const getVideogameById = async (idVideogame) => {
     id: apiRequestId.id,
     name: apiRequestId.name,
     description: apiRequestId.description,
-    platforms: apiRequestId.platforms.map((platform) => platform.platform.name),
+    platforms: apiRequestId.platforms?.map(
+      (platform) => platform.platform.name
+    ),
     background_image: apiRequestId.background_image,
     released: apiRequestId.released,
     rating: apiRequestId.rating,
-    genres: apiRequestId.genres.map((genre) => genre.name),
+    genres: apiRequestId.genres?.map((genre) => genre.name),
+    createdVideoGame: apiRequestId.createdVideoGame,
   };
 
   return apiRequestIdFiltered || "Id wasn't found";
@@ -151,6 +143,7 @@ const createNewVideogame = async (
       background_image,
       released,
       rating,
+      createdVideoGame: true,
     },
   });
 

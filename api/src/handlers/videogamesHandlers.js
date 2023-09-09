@@ -17,10 +17,11 @@ const getVideogamesByNameHandler = async (req, res) => {
           videogame.name.toLowerCase().includes(name.toLowerCase())
         )
         .slice(0, 15);
-      return res.status(200).json(responseWithName);
+      res.status(200).json(responseWithName);
+    } else {
+      const responseWithoutName = await getAllVideogames();
+      res.status(200).json(responseWithoutName);
     }
-    const responseWithoutName = await getAllVideogames();
-    res.status(200).json(responseWithoutName);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

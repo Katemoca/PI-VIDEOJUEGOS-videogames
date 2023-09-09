@@ -14,8 +14,8 @@ module.exports = (sequelize) => {
         allowNull: false,
         validate: {
           len: {
-            args: [2, 200],
-            msg: "The name should have between 2 to 200 characters",
+            args: [2, 100],
+            msg: "The name should have between 2 to 100 characters",
           },
         },
       },
@@ -24,7 +24,7 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
       platforms: {
-        type: DataTypes.ARRAY(DataTypes.JSON),
+        type: DataTypes.ARRAY(DataTypes.STRING),
         allowNull: false,
       },
       background_image: {
@@ -39,7 +39,7 @@ module.exports = (sequelize) => {
         type: DataTypes.FLOAT,
         allowNull: false,
       },
-      createdVideogame: {
+      createdVideoGame: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
       },
