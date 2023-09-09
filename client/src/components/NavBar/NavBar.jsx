@@ -1,9 +1,10 @@
+/* eslint-disable react/prop-types */
 import { Link } from "react-router-dom";
 
 import styles from "./NavBar.module.css";
 import SearchBar from "../SearchBar/SearchBar";
 
-const NavBar = () => {
+const NavBar = ({ currentPage, setCurrentPage, videogames }) => {
   return (
     <>
       <div className={styles.container}>
@@ -18,7 +19,11 @@ const NavBar = () => {
         </Link>
         <div>
           <div className={styles.searchbar}>
-            <SearchBar />
+            <SearchBar
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              videogames={videogames}
+            />
           </div>
 
           <select

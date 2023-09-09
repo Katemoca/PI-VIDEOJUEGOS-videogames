@@ -1,28 +1,84 @@
 import NavBar from "../../components/NavBar/NavBar";
 import CardsContainerVideogame from "../../components/CardsContainerVideogame/CardsContainerVideogame";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { getAllVideogames } from "../../redux/actions";
+import { useEffect, useState } from "react";
+import { getAllVideogames, getAllGenres } from "../../redux/actions";
+import Pagination from "../../components/Pagination/Pagination";
 
+import loading from "../../assets/loading/loading6.gif";
 import styles from "./Home.module.css";
 
 const Home = () => {
-  const videogames = useSelector((state) => state.videogames);
   const dispatch = useDispatch();
+  const videogames = useSelector((state) => state.videogames);
+  let videogamesPerPage = 15;
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const lastIndex = currentPage * videogamesPerPage;
+  const firstIndex = lastIndex - videogamesPerPage;
+  const currentVideogames = videogames.slice(firstIndex, lastIndex);
 
   useEffect(() => {
     dispatch(getAllVideogames());
-  }, [dispatch]);
+    dispatch(getAllGenres());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const paginate = (numberPages) => {
+    setCurrentPage(numberPages);
+  };
+
+  const next = () => {
+    if (lastIndex > videogames.length) return;
+    setCurrentPage(currentPage + 1);
+  };
+
+  const prev = () => {
+    if (firstIndex < 1) return;
+    setCurrentPage(currentPage - 1);
+  };
 
   return (
-    <div>
-      <NavBar />
+    <>
+      <NavBar
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        videogames={videogames}
+      />
       <div className={styles.homecontainer}>
+        <div className={styles.pagination}>
+          <Pagination
+            videogamesPerPage={videogamesPerPage}
+            videogames={videogames.length}
+            paginate={paginate}
+            next={next}
+            prev={prev}
+            currentPage={currentPage}
+          />
+        </div>
+
         <div>
-          <CardsContainerVideogame videogames={videogames} />
+          {currentVideogames.length > 0 ? (
+            <CardsContainerVideogame videogames={currentVideogames} />
+          ) : (
+            <div className={styles.loadingContainer}>
+              <img src={loading} alt="loading" className={styles.loadingImg} />
+              <p className={styles.loadingText}>Loading ...</p>
+            </div>
+          )}
+        </div>
+        <div className={styles.pagination}>
+          <Pagination
+            videogamesPerPage={videogamesPerPage}
+            videogames={videogames.length}
+            paginate={paginate}
+            next={next}
+            prev={prev}
+            currentPage={currentPage}
+          />
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

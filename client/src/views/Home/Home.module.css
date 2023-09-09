@@ -14,6 +14,29 @@
     font-family: 'Roboto Mono', monospace;
 }
 .homecontainer button option{
-    
     font-family: 'Barlow Semi Condensed', serif;
 }
+
+
+.loadingContainer {
+    background-color: #CB1AC8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  
+  .loadingImg{
+    width: 80%;
+    height: 80%
+  }
+  
+  .loadingText{
+      font-family: 'Silkscreen', cursive;
+      margin-top: 10px;
+      font-size: 18px; 
+      font-weight: bold;
+      color: #333;
+  }
+  

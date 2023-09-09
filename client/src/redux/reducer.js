@@ -1,12 +1,17 @@
 import {
   DELETE_DETAIL_VIDEOGAME,
+  GET_ALL_GENRES,
   GET_ALL_VIDEOGAMES,
   GET_VIDEOGAME_DETAIL,
+  RESET_DETAIL_TO_HOME,
+  SEARCH_BY_NAME,
 } from "./actionTypes";
 
 let initialState = {
   videogames: [],
-  videogameDetail: {},
+  videogamesBackUp: [],
+  videogameDetail: [],
+  genres: [],
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -15,6 +20,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         videogames: action.payload,
+        videogamesBackUp: [...action.payload],
       };
     case GET_VIDEOGAME_DETAIL:
       return {
@@ -27,6 +33,25 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         videogameDetail: action.payload,
       };
+
+    case RESET_DETAIL_TO_HOME:
+      return {
+        ...state,
+        videogameDetail: [],
+      };
+
+    case SEARCH_BY_NAME:
+      return {
+        ...state,
+        videogames: action.payload,
+      };
+
+    case GET_ALL_GENRES:
+      return {
+        ...state,
+        genres: action.payload,
+      };
+
     default:
       return {
         ...state,
