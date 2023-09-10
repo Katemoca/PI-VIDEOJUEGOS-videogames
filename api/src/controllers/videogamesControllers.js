@@ -89,7 +89,7 @@ const getVideogamesByName = async (name) => {
     return filterVideogames;
   }
 
-  return allVideogames;
+  return allVideogames.slice(0, 15);
 };
 
 //*********************************************************************************************************** //
