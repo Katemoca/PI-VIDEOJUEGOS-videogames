@@ -8,8 +8,8 @@ export const SEARCH_BY_NAME = "SEARCH_BY_NAME";
 export const GET_ALL_GENRES = "GET_ALL_GENRES";
 
 //FILTERS
-export const GENRE_FILTER = "GENRE_FILTER";
-export const ORIGIN_FILTER = "ORIGIN_FILTER";
+export const FILTER_BY_GENRE = "FILTER_BY_GENRE";
+export const FILTER_BY_ORIGIN = "FILTER_BY_ORIGIN";
 export const FILTER_BY_ORDER = "FILTER_BY_ORDER";
 export const FILTER_BY_RATING = "FILTER_BY_RATING ";
 export const RESET_FILTERS = "RESET_FILTERS";

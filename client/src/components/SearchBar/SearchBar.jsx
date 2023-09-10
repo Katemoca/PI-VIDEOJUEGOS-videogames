@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 
 import styles from "./SearchaBar.module.css";
 
-const SearchBar = ({ currentPage, setCurrentPage, videogames }) => {
+const SearchBar = ({ paginate, videogames }) => {
   const [name, setName] = useState("");
   const dispatch = useDispatch();
 
@@ -18,11 +18,10 @@ const SearchBar = ({ currentPage, setCurrentPage, videogames }) => {
     event.preventDefault();
     dispatch(searchByName(name));
     setName("");
-    setCurrentPage(1);
-
-    console.log(`Number of search results: ${videogames.length}`);
+    paginate(1);
   };
 
+  // console.log(`Number of search results: ${videogames}`);
   return (
     <>
       <input

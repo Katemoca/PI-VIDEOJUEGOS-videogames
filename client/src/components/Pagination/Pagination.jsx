@@ -11,8 +11,8 @@ const Pagination = ({
 }) => {
   const numberPages = [];
 
-  for (let i = 0; i <= Math.floor(videogames / videogamesPerPage); i++) {
-    numberPages.push(i + 1);
+  for (let i = 1; i <= Math.ceil(videogames / videogamesPerPage); i++) {
+    numberPages.push(i);
   }
 
   return (

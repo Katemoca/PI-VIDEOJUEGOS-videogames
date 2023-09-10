@@ -15,8 +15,8 @@ const CardVideogame = ({ id, name, background_image, rating, genres }) => {
               <h2 className={styles.name}>{name}</h2>
             </div>
             <div className={styles.genres_card_cont}>
-              {genres.map((g) => (
-                <ol key={g}>{g}</ol>
+              {genres.map((g, index) => (
+                <ol key={index}>{g}</ol>
               ))}
             </div>
 

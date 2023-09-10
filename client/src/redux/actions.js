@@ -6,6 +6,11 @@ import {
   RESET_DETAIL_TO_HOME,
   GET_ALL_GENRES,
   SEARCH_BY_NAME,
+  FILTER_BY_GENRE,
+  FILTER_BY_ORDER,
+  FILTER_BY_RATING,
+  FILTER_BY_ORIGIN,
+  RESET_FILTERS,
 } from "./actionTypes.js";
 
 //Action para traer todos los videojuegos
@@ -70,9 +75,9 @@ export const postVideogame = (form) => {
     const URL = "http://localhost:3001/videogames";
     try {
       await axios.post(`${URL}`, form);
-      alert("The videogame was create 😉");
+      alert("The videogame was created 😉");
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data.error);
       alert("The videogame wasn't created 🙈");
     }
   };
@@ -86,7 +91,7 @@ export const searchByName = (name) => {
       const response = await axios.get(`${URL}?name=${name}`);
       dispatch({
         type: SEARCH_BY_NAME,
-        payload: response.data,
+        payload: response.data.slice(0, 15),
       });
     } catch (error) {
       alert(error.response.data.error);
@@ -107,5 +112,42 @@ export const getAllGenres = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+};
+
+//*************************************************************************************************************************************/
+//FILTROS Y ORDENAMIENTO "GLOBALES"
+
+export const filterByGenre = (payload) => {
+  return {
+    type: FILTER_BY_GENRE,
+    payload,
+  };
+};
+
+export const filterByOrigin = (payload) => {
+  return {
+    type: FILTER_BY_ORIGIN,
+    payload,
+  };
+};
+
+export const filterByOrder = (payload) => {
+  return {
+    type: FILTER_BY_ORDER,
+    payload,
+  };
+};
+
+export const filterByRating = (payload) => {
+  return {
+    type: FILTER_BY_RATING,
+    payload,
+  };
+};
+
+export const resetFilters = () => {
+  return {
+    type: RESET_FILTERS,
   };
 };

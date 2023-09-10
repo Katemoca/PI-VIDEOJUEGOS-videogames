@@ -24,6 +24,7 @@ const Home = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  //Función que establece la página actual
   const paginate = (numberPages) => {
     setCurrentPage(numberPages);
   };
@@ -41,9 +42,9 @@ const Home = () => {
   return (
     <>
       <NavBar
-        currentPage={currentPage}
+        paginate={paginate}
         setCurrentPage={setCurrentPage}
-        videogames={videogames}
+        videogames={videogames.length}
       />
       <div className={styles.homecontainer}>
         <div className={styles.pagination}>
