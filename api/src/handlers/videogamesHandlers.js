@@ -4,6 +4,7 @@ const {
   getVideogamesByName,
   getVideogameById,
   deleteVideogame,
+  updateVideogame,
 } = require("../controllers/videogamesControllers");
 
 //* ********************************************************************************************************** *//
@@ -84,7 +85,7 @@ const createVideogamesHandler = async (req, res) => {
   }
 };
 
-//* ********************************************************************************************************** *//
+//* **********************************************************************************************************//
 //Handler para borrar un videojuego por id y manejar errores
 const deleteVideogameByIdHandler = async (req, res) => {
   try {
@@ -96,10 +97,39 @@ const deleteVideogameByIdHandler = async (req, res) => {
   }
 };
 
-//* ********************************************************************************************************** *//
+//* **********************************************************************************************************//
+const updateVideogameByIdHandler = async (req, res) => {
+  try {
+    const { idVideogame } = req.params;
+    const {
+      name,
+      description,
+      platforms,
+      background_image,
+      released,
+      rating,
+      genres,
+    } = req.body;
+    const updatedVideogame = await updateVideogame(
+      idVideogame,
+      name,
+      description,
+      platforms,
+      background_image,
+      released,
+      rating,
+      genres
+    );
+    return res.status(200).json(updatedVideogame);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   getVideogamesByNameHandler,
   getVideogamesByIdHandler,
   createVideogamesHandler,
   deleteVideogameByIdHandler,
+  updateVideogameByIdHandler,
 };

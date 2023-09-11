@@ -148,8 +148,8 @@ const createNewVideogame = async (
   });
 
   genres.forEach(async (genreFound) => {
-    let genresDb = await Genre.findAll({ where: { name: genreFound } });
-    await newVideogame.addGenres(genresDb);
+    let genresToAdd = await Genre.findAll({ where: { name: genreFound } });
+    await newVideogame.addGenres(genresToAdd);
   });
 
   if (created) {
@@ -172,10 +172,49 @@ const deleteVideogame = async (idVideogame) => {
 };
 
 //*********************************************************************************************************** //
+const updateVideogame = async (
+  idVideogame,
+  name,
+  description,
+  platforms,
+  background_image,
+  released,
+  rating,
+  genres
+) => {
+  const videogameToUpdate = await Videogame.findByPk(idVideogame);
+
+  if (!videogameToUpdate) {
+    throw Error("Videogame not found");
+  }
+
+  videogameToUpdate.name = name;
+  videogameToUpdate.description = description;
+  videogameToUpdate.platforms = platforms;
+  videogameToUpdate.background_image = background_image;
+  videogameToUpdate.released = released;
+  videogameToUpdate.rating = rating;
+
+  await videogameToUpdate.save();
+
+  const genresToAdd = await Genre.findAll({
+    where: {
+      name: genres,
+    },
+  });
+
+  if (!genresToAdd || genresToAdd.length === 0) {
+    throw Error("No genres were found");
+  }
+
+  await videogameToUpdate.setGenres(genresToAdd);
+};
+
 module.exports = {
   createNewVideogame,
   getAllVideogames,
   getVideogamesByName,
   getVideogameById,
   deleteVideogame,
+  updateVideogame,
 };
