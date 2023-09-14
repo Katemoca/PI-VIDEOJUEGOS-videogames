@@ -172,6 +172,7 @@ const deleteVideogame = async (idVideogame) => {
 };
 
 //*********************************************************************************************************** //
+//Controller para actualizar un videojuego creado
 const updateVideogame = async (
   idVideogame,
   name,
@@ -207,7 +208,9 @@ const updateVideogame = async (
     throw Error("No genres were found");
   }
 
-  await videogameToUpdate.setGenres(genresToAdd);
+  const successMessage = `videogame was updated`;
+
+  return successMessage;
 };
 
 module.exports = {
