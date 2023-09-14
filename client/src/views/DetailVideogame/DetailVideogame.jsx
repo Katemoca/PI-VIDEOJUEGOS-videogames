@@ -32,7 +32,7 @@ const DetailVideogame = () => {
     };
   }, [dispatch, detailId]);
 
-  const handleDelete = () => {
+  const handleDelete = (detailId) => {
     console.log("Delete button clicked");
     dispatch(deleteDetailVideogame(detailId));
     dispatch(getAllVideogames());
@@ -62,7 +62,11 @@ const DetailVideogame = () => {
             )}
             <h2>{detail.name}</h2>
             <img
-              src={detail.background_image}
+              src={
+                detail.background_image
+                  ? detail.background_image
+                  : "https://fakeimg.pl/400x400/be47d9/c42b2b?text=No+image"
+              }
               className={styles.image}
               alt={detail.name}
             />
@@ -85,7 +89,9 @@ const DetailVideogame = () => {
               </p>
               <p>
                 <strong>Genres: </strong>
-                {detail.genres.join(", ")}
+                {detail.genres.length
+                  ? detail.genres.join(", ")
+                  : "There aren't any genres for this videogame"}
               </p>
               <p>
                 <strong>Description: </strong>

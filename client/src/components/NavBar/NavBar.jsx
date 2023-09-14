@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { Link } from "react-router-dom";
 import SearchBar from "../SearchBar/SearchBar";
@@ -12,25 +13,28 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "./NavBar.module.css";
 
 const NavBar = ({ paginate, videogames }) => {
-  const genres = useSelector((state) => state.genres);
   const dispatch = useDispatch();
+  const genres = useSelector((state) => state.copyGenres);
 
   // HANDLERS PARA LOS FILTROS
-
   const handleFilterOrigin = (event) => {
-    dispatch(filterByOrigin(event.target.value));
+    const { value } = event.target;
+    dispatch(filterByOrigin(value));
   };
   const handleFilterGenres = (event) => {
+    const { value } = event.target;
     event.preventDefault();
-    dispatch(filterByGenre(event.target.value));
+    dispatch(filterByGenre(value));
   };
   const handleFilterByOrder = (event) => {
+    const { value } = event.target;
     event.preventDefault();
-    dispatch(filterByOrder(event.target.value));
+    dispatch(filterByOrder(value));
   };
   const handleFilterByRating = (event) => {
+    const { value } = event.target;
     event.preventDefault();
-    dispatch(filterByRating(event.target.value));
+    dispatch(filterByRating(value));
   };
 
   return (
@@ -73,18 +77,19 @@ const NavBar = ({ paginate, videogames }) => {
               Filter by genres
             </option>
 
-            {genres.map((game, index) => (
+            {genres?.map((game, index) => (
               <option key={index} value={game}>
                 {game}
               </option>
             ))}
           </select>
 
-          <select className={styles.select} defaultValue="0" id="orderByName">
-            <option
-              disabled
-              value="0"
-              onChange={(event) => handleFilterByOrder(event)}>
+          <select
+            className={styles.select}
+            defaultValue="0"
+            id="orderByName"
+            onChange={(event) => handleFilterByOrder(event)}>
+            <option disabled value="0">
               Order by name
             </option>
             <option value="a-z">A-Z</option>

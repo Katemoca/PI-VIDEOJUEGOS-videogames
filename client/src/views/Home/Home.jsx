@@ -11,8 +11,9 @@ import styles from "./Home.module.css";
 const Home = () => {
   const dispatch = useDispatch();
   const videogames = useSelector((state) => state.videogames);
-  let videogamesPerPage = 15;
 
+  //Paginado
+  let videogamesPerPage = 15;
   const [currentPage, setCurrentPage] = useState(1);
   const lastIndex = currentPage * videogamesPerPage;
   const firstIndex = lastIndex - videogamesPerPage;
@@ -24,7 +25,7 @@ const Home = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  //Función que establece la página actual
+  //Función que establece y actualiza la página en la que nos encontramos
   const paginate = (numberPages) => {
     setCurrentPage(numberPages);
   };

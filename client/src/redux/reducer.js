@@ -6,7 +6,6 @@ import {
   GET_VIDEOGAME_DETAIL,
   RESET_DETAIL_TO_HOME,
   SEARCH_BY_NAME,
-  RESET_FILTERS,
   FILTER_BY_GENRE,
   FILTER_BY_ORIGIN,
   FILTER_BY_ORDER,
@@ -15,10 +14,10 @@ import {
 
 let initialState = {
   videogames: [],
-  videogamesBackUp: [],
+  copyGames: [],
   videogameDetail: [],
   genres: [],
-  filteredVideogames: "ALL",
+  copygenres: [],
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -27,7 +26,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         videogames: action.payload,
-        videogamesBackUp: [...action.payload],
+        copyGames: action.payload,
       };
     case GET_VIDEOGAME_DETAIL:
       return {
@@ -57,57 +56,61 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         genres: action.payload,
-      };
-
-    case RESET_FILTERS:
-      return {
-        ...state,
-        filteredVideogames: "ALL",
+        copyGenres: action.payload,
       };
 
     case FILTER_BY_GENRE:
+      const filteredGenre = state.copyGames.filter((game) =>
+        game.genres?.includes(action.payload)
+      );
+
       return {
         ...state,
-        videogames: state.videogamesBackUp.filter((game) => {
-          return game.genres?.includes(action.payload);
-        }),
+        videogames: filteredGenre,
       };
 
     case FILTER_BY_ORIGIN:
-      if (action.payload === "api") {
-        const apiVideogame = [...state.videogames].filter(
-          (game) => game.createdVideoGame !== true
-        );
-        return { ...state, videogames: apiVideogame };
-      } else if (action.payload === "db") {
-        const dbVideogames = [...state.videogames].filter(
-          (game) => game.createdVideoGame === true
-        );
-        return { ...state, videogames: dbVideogames };
-      } else {
-        return { ...state, videogames: state.videogamesBackUp };
-      }
+      const apiVideogame = state.copyGames.filter(
+        (vg) => vg.createdVideoGame !== true
+      );
+      const dbVideogame = state.copyGames.filter(
+        (vg) => vg.createdVideoGame === true
+      );
+
+      const filteredVideogames =
+        action.payload === "api"
+          ? apiVideogame
+          : action.payload === "db"
+          ? dbVideogame
+          : state.copyGames;
+
+      return {
+        ...state,
+        videogames: filteredVideogames,
+      };
 
     case FILTER_BY_ORDER:
       let copyVideogames = [...state.videogames];
-      let orderedGames;
-
-      switch (action.payload) {
-        case "a-z":
-          orderedGames = copyVideogames.sort((a, b) =>
-            a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1
-          );
-          break;
-
-        case "z-a":
-          orderedGames = copyVideogames.sort((a, b) =>
-            b.name.toLowerCase() > a.name.toLowerCase() ? 1 : -1
-          );
-          break;
-
-        default:
-          orderedGames = copyVideogames;
-      }
+      let orderedGames =
+        action.payload === "a-z"
+          ? copyVideogames.sort((a, b) => {
+              if (a.name.toLowerCase() > b.name.toLowerCase()) {
+                return 1;
+              }
+              if (b.name.toLowerCase() > a.name.toLowerCase()) {
+                return -1;
+              }
+              return 0;
+            })
+          : copyVideogames.sort((a, b) => {
+              if (a.name.toLowerCase() > b.name.toLowerCase()) {
+                return -1;
+              }
+              if (b.name.toLowerCase() > a.name.toLowerCase()) {
+                return 1;
+              }
+              return 0;
+            });
 
       return {
         ...state,
@@ -115,38 +118,27 @@ const rootReducer = (state = initialState, action) => {
       };
 
     case FILTER_BY_RATING:
-      let copyVideoRating = [...state.videogames];
-      let ratingGames;
-
-      switch (action.payload) {
-        case "1-9":
-          ratingGames = copyVideoRating.sort((a, b) => {
-            if (a.rating > b.rating) {
-              return 1;
-            }
-            if (b.rating > a.rating) {
-              return -1;
-            }
-            return 0;
-          });
-          break;
-
-        case "9-1":
-          ratingGames = copyVideoRating.sort((a, b) => {
-            if (a.rating > b.rating) {
-              return -1;
-            }
-            if (b.rating > a.rating) {
-              return 1;
-            }
-            return 0;
-          });
-          break;
-
-        default:
-          ratingGames = copyVideoRating;
-      }
-
+      let copyRatingVideogames = [...state.videogames];
+      let ratingGames =
+        action.payload === "1-9"
+          ? copyRatingVideogames.sort((a, b) => {
+              if (a.rating > b.rating) {
+                return 1;
+              }
+              if (b.rating > a.rating) {
+                return -1;
+              }
+              return 0;
+            })
+          : copyRatingVideogames.sort((a, b) => {
+              if (a.rating > b.rating) {
+                return -1;
+              }
+              if (b.rating > a.rating) {
+                return 1;
+              }
+              return 0;
+            });
       return {
         ...state,
         videogames: ratingGames,

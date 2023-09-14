@@ -21,6 +21,14 @@ const SearchBar = ({ paginate, videogames }) => {
     paginate(1);
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      dispatch(searchByName(name));
+      setName("");
+      paginate(1);
+    }
+  };
+
   // console.log(`Number of search results: ${videogames}`);
   return (
     <>
@@ -30,6 +38,7 @@ const SearchBar = ({ paginate, videogames }) => {
         placeholder="Search here 🎮"
         onChange={handleInputChange}
         value={name}
+        onKeyDown={handleKeyPress}
       />
       <button
         className={styles.button}

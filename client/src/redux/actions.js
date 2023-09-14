@@ -10,7 +10,6 @@ import {
   FILTER_BY_ORDER,
   FILTER_BY_RATING,
   FILTER_BY_ORIGIN,
-  RESET_FILTERS,
 } from "./actionTypes.js";
 
 //Action para traer todos los videojuegos
@@ -143,11 +142,5 @@ export const filterByRating = (payload) => {
   return {
     type: FILTER_BY_RATING,
     payload,
-  };
-};
-
-export const resetFilters = () => {
-  return {
-    type: RESET_FILTERS,
   };
 };
