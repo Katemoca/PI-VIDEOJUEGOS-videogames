@@ -215,7 +215,9 @@ const CreateVideogame = () => {
             </div>
 
             <div>
-              <label style={{ fontWeight: "bold" }}>Rating: </label>
+              <label style={{ fontWeight: "bold" }}>
+                Rating from 1 (bad) to 5 (excellent){" "}
+              </label>
               <input
                 type="range"
                 min="0"
