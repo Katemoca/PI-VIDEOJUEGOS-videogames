@@ -10,6 +10,7 @@ import styles from "./CreateVideogame.module.css";
 const CreateVideogame = () => {
   const dispatch = useDispatch();
   const genres = useSelector((state) => state.genres);
+  const [selectedGenres, setSelectedGenres] = useState([]);
 
   useEffect(() => {
     dispatch(getAllGenres());
@@ -63,13 +64,38 @@ const CreateVideogame = () => {
   //Handler para el select de géneros
   const handleSelectedGenres = (event) => {
     if (event.target.name === "genres") {
-      if (form.genres.includes(event.target.value)) return;
-      setForm({
-        ...form,
-        genres: [...form.genres, event.target.value],
-      });
+      const selectedGenresValue = event.target.value;
+      if (selectedGenresValue === "0") {
+        // Handle the "Genres" option separately
+        setSelectedGenres([]);
+        setForm({
+          ...form,
+          genres: [],
+        });
+      } else if (!selectedGenres.includes(selectedGenresValue)) {
+        // Update the list of selected genres
+        setSelectedGenres([...selectedGenres, selectedGenresValue]);
+
+        setForm({
+          ...form,
+          genres: [...form.genres, selectedGenresValue],
+        });
+      }
     }
   };
+
+  console.log("selectedGenres", selectedGenres);
+
+  const availableGenreOptions = genres
+    .filter((genre) => !selectedGenres.includes(genre))
+    .map((g, index) => (
+      <option key={index} value={g}>
+        {g}
+      </option>
+    ));
+
+  console.log("available genres", availableGenreOptions);
+  console.log("form genres", form.genres);
 
   // Handler para evento onClick para remover items
   const removeFromArrayHandler = (event, property) => {
@@ -82,13 +108,29 @@ const CreateVideogame = () => {
 
   // Remover plataforma escrita en input
   const handleClickedPlatform = (event) => {
+    event.preventDefault();
     removeFromArrayHandler(event, "platforms");
   };
 
-  //Remover género seleccionado en select
+  // Remover plataforma escrita en input
   const handleClickedGenre = (event) => {
-    removeFromArrayHandler(event, "genres");
+    event.preventDefault();
+    const clickedGenre = event.target.value;
+
+    const updatedSelectedGenres = selectedGenres.filter(
+      (g) => g !== clickedGenre
+    );
+    const updatedFormGenres = form.genres.filter((g) => g !== clickedGenre);
+
+    setSelectedGenres(updatedSelectedGenres);
+    setForm({ ...form, genres: updatedFormGenres });
   };
+
+  // //Remover género seleccionado en select
+  // const handleClickedGenre = (event) => {
+  //   event.preventDefault();
+  //   removeFromArrayHandler(event, "genres");
+  // };
 
   //Handler para input tipo "range" en rating
   const handleRangeRating = (event) => {
@@ -250,19 +292,11 @@ const CreateVideogame = () => {
             </div>
             <div>
               <label style={{ fontWeight: "bold" }}>Genres: </label>
-              <select
-                name="genres"
-                id="genres"
-                onChange={handleSelectedGenres}
-                defaultValue="0">
+              <select name="genres" id="genres" onChange={handleSelectedGenres}>
                 <option disabled value="0">
                   Genres
                 </option>
-                {genres?.map((genre) => (
-                  <option key={genre} value={genre}>
-                    {genre}
-                  </option>
-                ))}
+                {availableGenreOptions}
               </select>
               <div className={styles.error_cont}>
                 {errors.genres && (
@@ -270,8 +304,8 @@ const CreateVideogame = () => {
                 )}
               </div>
               <div>
-                {form.genres.map((genre, index) => (
-                  <div key={index}>
+                {form.genres.map((genre) => (
+                  <div key={genre}>
                     <button value={genre} onClick={handleClickedGenre}>
                       {genre}
                     </button>
